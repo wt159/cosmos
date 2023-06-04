@@ -1,6 +1,6 @@
 #ifndef _RANGE_HPP_
 #define _RANGE_HPP_
-
+#include <stdexcept>
 namespace detail_range {
 template <typename value_t>
 class RangeImpl {

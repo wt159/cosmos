@@ -60,7 +60,5 @@ void TestRange()
 int main(void)
 {
     TestRange();
-
-    system("pause");
     return 0;
 }
