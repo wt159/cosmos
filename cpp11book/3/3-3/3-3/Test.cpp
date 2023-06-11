@@ -1,5 +1,6 @@
 #include <iostream>
 
+#if 0
 template <typename T>
 void Print(T t)
 {
@@ -30,6 +31,21 @@ void Print(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5)
     std::cout << t1 << t2 << t3 << t4 << t5 << std::endl;
 }
 
+#else
+template <typename T>
+void Print(T t)
+{
+    std::cout << t << std::endl;
+}
+
+template <typename T, typename ...Args>
+void Print(T t, Args ...args)
+{
+    std::cout << t;
+    Print(args...);
+}
+#endif
+
 int main(void)
 {
     Print(1);
@@ -38,6 +54,5 @@ int main(void)
     Print(1, 2, 3, 4);
     Print(1, 2, 3, 4, 5);
 
-    system("pause");
     return 0;
 }

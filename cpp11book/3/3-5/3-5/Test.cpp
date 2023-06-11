@@ -16,13 +16,13 @@ struct MyStruct {
 
 void TestOptional()
 {
-    Optional<std::string> a("ok");
-    Optional<std::string> b("ok");
-    Optional<std::string> c("aa");
+    optional<std::string> a("ok");
+    optional<std::string> b("ok");
+    optional<std::string> c("aa");
 
     c = a;
 
-    Optional<MyStruct> op;
+    optional<MyStruct> op;
     op.emplace(1, 2);
     MyStruct t;
 
@@ -39,6 +39,5 @@ int main(void)
 {
     TestOptional();
 
-    system("pause");
     return 0;
 }

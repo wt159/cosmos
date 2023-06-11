@@ -1,69 +1,89 @@
 #ifndef _OPTIONAL_HPP_
 #define _OPTIONAL_HPP_
 
+#include <exception>
 #include <type_traits>
+#include <utility>
 
 template <typename T>
-class Optional {
+class optional {
     using data_t = typename std::aligned_storage<sizeof(T), std::alignment_of<T>::value>::type;
     // typedef typename std::aligned_storage<sizeof(T),
     //                       std::alignment_of<T>::value>::type data_t;  //这种方式也可以啦
 public:
-    Optional() { }
+    optional() { }
 
-    Optional(const T& v)
+    optional(const T& v)
     {
-        Create(v);
+        create(v);
     }
 
-    Optional(T&& v)
+    optional(T&& v)
     {
-        Create(std::move(v));
+        create(std::move(v));
     }
 
-    ~Optional()
+    ~optional()
     {
-        Destroy();
+        destroy();
     }
 
-    Optional(const Optional& other)
+    optional(const optional& other)
     {
-        if (other.IsInit())
-            Assign(other);
+        if (other.has_value())
+            assign(other);
     }
 
-    Optional(Optional&& other)
+    optional(optional&& other)
     {
-        if (other.IsInit()) {
-            Assign(std::move(other));
-            other.Destroy();
+        if (other.has_value()) {
+            assign(std::move(other));
+            other.destroy();
         }
     }
 
-    Optional& operator=(Optional&& other)
+    optional& operator=(optional&& other)
     {
-        Assign(std::move(other));
+        assign(std::move(other));
         return *this;
     }
 
-    Optional& operator=(const Optional& other)
+    optional& operator=(const optional& other)
     {
-        Assign(other);
+        assign(other);
         return *this;
     }
 
     template <class... Args>
     void emplace(Args&&... args)
     {
-        Destroy();
-        Create(std::forward<Args>(args)...);
+        destroy();
+        create(std::forward<Args>(args)...);
     }
 
-    bool IsInit() const { return m_hasInit; }
+    void reset()
+    {
+        destroy();
+    }
+
+    void swap(optional& other)
+    {
+        if ((has_value() == true) && (other.has_value() == true)) {
+            std::swap(**this, *other);
+        } else if ((has_value() == false) && (other.has_value() == true)) {
+            create(std::move(*other));
+            other.destroy();
+        } else if ((has_value() == true) && (other.has_value() == false)) {
+            other.create(std::move(**this));
+            destroy();
+        }
+    }
+
+    bool has_value() const { return m_hasValue; }
 
     explicit operator bool() const
     {
-        return IsInit();
+        return has_value();
     }
 
     T& operator*()
@@ -73,79 +93,112 @@ public:
 
     T const& operator*() const
     {
-        if (IsInit()) {
+        if (has_value()) {
             return *((T*)(&m_data));
         }
 
         throw std::exception("");
     }
 
-    bool operator==(const Optional<T>& rhs) const
+    T* operator->()
+    {
+        return ((T*)(&m_data));
+    }
+
+    const T* operator->() const
+    {
+        return ((T*)(&m_data));
+    }
+
+    T& value()
+    {
+        if (has_value()) {
+            return *((T*)(&m_data));
+        }
+
+        throw std::exception("");
+    }
+
+    const T& value() const
+    {
+        if (has_value()) {
+            return *((T*)(&m_data));
+        }
+
+        throw std::exception("");
+    }
+
+    bool operator==(const optional<T>& rhs) const
     {
         return (!bool(*this)) != (!rhs) ? false : (!bool(*this) ? true : (*(*this)) == (*rhs));
     }
 
-    bool operator<(const Optional<T>& rhs) const
+    bool operator<(const optional<T>& rhs) const
     {
         return !rhs ? false : (!bool(*this) ? true : (*(*this) < (*rhs)));
     }
 
-    bool operator!=(const Optional<T>& rhs)
+    bool operator>(const optional<T>& rhs) const
+    {
+        return (rhs < *this) && !(*this == rhs);
+    }
+
+    bool operator!=(const optional<T>& rhs)
     {
         return !(*this == (rhs));
     }
 
 private:
     template <class... Args>
-    void Create(Args&&... args)
+    void create(Args&&... args)
     {
         new (&m_data) T(std::forward<Args>(args)...);
-        m_hasInit = true;
+        m_hasValue = true;
     }
 
-    void Destroy()
+    void destroy()
     {
-        if (m_hasInit) {
-            m_hasInit = false;
+        if (m_hasValue) {
+            m_hasValue = false;
             ((T*)(&m_data))->~T();
         }
     }
 
-    void Assign(const Optional& other)
+    void assign(const optional& other)
     {
-        if (other.IsInit()) {
-            Copy(other.m_data);
-            m_hasInit = true;
+        if (other.has_value()) {
+            copy(other.m_data);
+            m_hasValue = true;
         } else {
-            Destroy();
+            destroy();
         }
     }
 
-    void Assign(Optional&& other)
+    void assign(optional&& other)
     {
-        if (other.IsInit()) {
-            Move(std::move(other.m_data));
-            m_hasInit = true;
-            other.Destroy();
+        if (other.has_value()) {
+            move(std::move(other.m_data));
+            m_hasValue = true;
+            other.destroy();
         } else {
-            Destroy();
+            destroy();
         }
     }
 
-    void Move(data_t&& val)
+    void move(data_t&& val)
     {
-        Destroy();
+        destroy();
         new (&m_data) T(std::move(*((T*)(&val))));
     }
 
-    void Copy(const data_t& val)
+    void copy(const data_t& val)
     {
-        Destroy();
+        destroy();
         new (&m_data) T(*((T*)(&val)));
     }
 
 private:
-    bool m_hasInit = false;
+    bool m_hasValue = false;
     data_t m_data;
 };
 

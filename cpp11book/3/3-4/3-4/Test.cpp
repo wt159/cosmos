@@ -1,5 +1,7 @@
 #include <iostream>
 
+#if 0
+
 template <typename T>
 T* Instance()
 {
@@ -36,6 +38,21 @@ T* Instance(T0 arg0, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
     return new T(arg0, arg1, arg2, arg3, arg4);
 }
 
+#else
+#if 0
+template <typename T, typename ...Args>
+T* Instance(Args ...args)
+{
+    return new T(args...);
+}
+#else
+template <typename T, typename ...Args>
+T* Instance(Args&& ...args)
+{
+    return new T(std::forward<Args>(args)...);
+}
+#endif
+#endif
 struct A {
     A(int) { }
 };
@@ -49,6 +66,5 @@ int main(void)
     A* pa = Instance<A>(1);
     B* pb = Instance<B>(1, 2);
 
-    system("pause");
     return 0;
 }
