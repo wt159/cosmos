@@ -34,3 +34,18 @@ int main(void)
 
     return 0;
 }
+
+/* 
+lvalue
+rvalue
+rvalue
+-----------
+lvalue
+lvalue
+rvalue
+-----------
+lvalue
+rvalue
+rvalue
+-----------
+ */
