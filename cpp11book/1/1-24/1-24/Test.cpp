@@ -2,7 +2,6 @@
 #include <iostream>
 #include <vector>
 
-
 class CountEven {
     int& count_;
 

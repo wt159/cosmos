@@ -5,7 +5,6 @@
 #include <utility>
 #include <vector>
 
-
 struct Key {
     std::string first;
     std::string second;

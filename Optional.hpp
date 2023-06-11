@@ -1,21 +1,25 @@
 #pragma once
+#include <stdexcept>
 #include <type_traits>
 #include <utility>
-#include <stdexcept>
 
-template<typename T>
-class Optional
-{
+template <typename T>
+class Optional {
     using data_t = typename std::aligned_storage<sizeof(T), std::alignment_of<T>::value>::type;
+
 public:
-    Optional() : has_init_(false) {}
+    Optional()
+        : has_init_(false)
+    {
+    }
 
     Optional(const T& v)
     {
         create(v);
     }
 
-    Optional(T&& v) : has_init_(false)
+    Optional(T&& v)
+        : has_init_(false)
     {
         create(std::move(v));
     }
@@ -25,34 +29,35 @@ public:
         destroy();
     }
 
-    Optional(const Optional& other) : has_init_(false)
+    Optional(const Optional& other)
+        : has_init_(false)
     {
         if (other.isInit())
             assign(other);
     }
 
-    Optional(Optional&& other) : has_init_(false)
+    Optional(Optional&& other)
+        : has_init_(false)
     {
-        if (other.isInit())
-        {
+        if (other.isInit()) {
             assign(std::move(other));
             other.destroy();
         }
     }
 
-    Optional& operator=(Optional &&other)
+    Optional& operator=(Optional&& other)
     {
         assign(std::move(other));
         return *this;
     }
 
-    Optional& operator=(const Optional &other)
+    Optional& operator=(const Optional& other)
     {
         assign(other);
         return *this;
     }
 
-    template<class... Args>
+    template <class... Args>
     void emplace(Args&&... args)
     {
         destroy();
@@ -61,29 +66,27 @@ public:
 
     bool isInit() const { return has_init_; }
 
-    explicit operator bool() const 
+    explicit operator bool() const
     {
         return isInit();
     }
 
     T& operator*()
     {
-        if(isInit())
-        {
-            return *((T*) (&data_));
+        if (isInit()) {
+            return *((T*)(&data_));
         }
 
-        throw std::logic_error{"try to get data in a Optional which is not initialized"};
+        throw std::logic_error { "try to get data in a Optional which is not initialized" };
     }
 
     const T& operator*() const
     {
-        if(isInit())
-        {
-            return *((T*) (&data_));
+        if (isInit()) {
+            return *((T*)(&data_));
         }
 
-        throw std::logic_error{"try to get data in a Optional which is not initialized"};
+        throw std::logic_error { "try to get data in a Optional which is not initialized" };
     }
 
     T* operator->()
@@ -110,8 +113,9 @@ public:
     {
         return !(*this == (rhs));
     }
+
 private:
-    template<class... Args>
+    template <class... Args>
     void create(Args&&... args)
     {
         new (&data_) T(std::forward<Args>
@@ -122,36 +126,29 @@ private:
 
     void destroy()
     {
-        if (has_init_)
-        {
+        if (has_init_) {
             has_init_ = false;
-            ((T*) (&data_))->~T();
+            ((T*)(&data_))->~T();
         }
     }
 
     void assign(const Optional& other)
     {
-        if (other.isInit())
-        {
+        if (other.isInit()) {
             copy(other.data_);
             has_init_ = true;
-        }
-        else
-        {
+        } else {
             destroy();
         }
     }
 
     void assign(Optional&& other)
     {
-        if (other.isInit())
-        {
+        if (other.isInit()) {
             move(std::move(other.data_));
             has_init_ = true;
             other.destroy();
-        }
-        else
-        {
+        } else {
             destroy();
         }
     }
@@ -165,7 +162,7 @@ private:
     void copy(const data_t& val)
     {
         destroy();
-        new (&data_) T(*((T*) (&val)));
+        new (&data_) T(*((T*)(&val)));
     }
 
 private:

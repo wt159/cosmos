@@ -1,7 +1,6 @@
 #include <functional>
 #include <iostream>
 
-
 void call_when_even(int x, const std::function<void(int)>& f)
 {
     if (!(x & 1)) // x % 2 == 0

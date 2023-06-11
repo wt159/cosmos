@@ -1,7 +1,6 @@
 #include <functional>
 #include <iostream>
 
-
 void func(void)
 {
     std::cout << __FUNCTION__ << std::endl;

@@ -1,13 +1,11 @@
 #pragma once
 #include <iostream>
 
-class Message
-{
+class Message {
 public:
-	virtual ~Message() {}
+    virtual ~Message() { }
 
-	virtual void foo()
-	{
-
-	}
+    virtual void foo()
+    {
+    }
 };

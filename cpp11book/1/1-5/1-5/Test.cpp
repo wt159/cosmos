@@ -6,6 +6,7 @@ class Foo {
     // typename ContainerT::iterator it_; //类型定义可能有问题
     //若想在 const ContainerT 下通过编译请使用下面it_定义：
     decltype(std::declval<ContainerT>().begin()) it_;
+
 public:
     void func(ContainerT& container)
     {

@@ -2,7 +2,6 @@
 #include <iostream>
 #include <vector>
 
-
 class MyString {
 private:
     char* m_data;

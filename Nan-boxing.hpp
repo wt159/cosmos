@@ -1,6 +1,6 @@
 #pragma once
-#include <cstddef>
 #include <assert.h>
+#include <cstddef>
 #include <cstdint>
 using namespace std;
 
@@ -25,7 +25,8 @@ union Value {
     uint64_t ival;
     double fval;
 
-    Value(double x) : fval(x)
+    Value(double x)
+        : fval(x)
     {
     }
 
@@ -63,7 +64,8 @@ union Value {
         ival = NAN_MASK | ((uint64_t)STRING << TAG_SHIFT) | (uint64_t)&v;
     }
 
-    Value(TypeTag tag = NIL, void *payload = nullptr) {
+    Value(TypeTag tag = NIL, void* payload = nullptr)
+    {
         assert((uint64_t)payload <= PAYLOAD_MASK);
         ival = NAN_MASK | ((uint64_t)tag << TAG_SHIFT) | (uint64_t)payload;
     }
@@ -102,16 +104,16 @@ union Value {
         return fval;
     }
 
-    char *toCharArray() const
+    char* toCharArray() const
     {
         assert(getTag() == CHAR_ARRAY);
-        return (char *)getPayload();
+        return (char*)getPayload();
     }
 
     string& toString() const
     {
         assert(getTag() == STRING);
-        return *(string *)getPayload();
+        return *(string*)getPayload();
     }
 
     TypeTag getTag() const
@@ -125,15 +127,16 @@ union Value {
         return ival & PAYLOAD_MASK;
     }
 
-    bool operator<(const Value& other)  const
+    bool operator<(const Value& other) const
     {
-        return hash()<other.hash();
+        return hash() < other.hash();
     }
 
-    bool operator==(const Value& other)  const
+    bool operator==(const Value& other) const
     {
         return hash() == other.hash();
     }
+
 private:
     bool isPayload() const
     {
@@ -155,14 +158,15 @@ private:
         return toInt64();
     }
 
-    std::size_t hash() const {
+    std::size_t hash() const
+    {
         switch (getTag()) {
-        case         UINT64:
-        case         INT32:
-        case         UINT32:
-        case           BOOL:
+        case UINT64:
+        case INT32:
+        case UINT32:
+        case BOOL:
             return std::hash<uint64_t>()(toHashUInt64());
-        case         INT64:
+        case INT64:
             return std::hash<int64_t>()(toHashInt64());
         case DOUBLE:
             return std::hash<double>()(toDouble());

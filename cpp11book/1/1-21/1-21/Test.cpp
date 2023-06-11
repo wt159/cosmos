@@ -1,7 +1,6 @@
 #include <functional>
 #include <iostream>
 
-
 void output(int x, int y)
 {
     std::cout << x << " " << y << std::endl;
