@@ -53,7 +53,5 @@ void TestLazy()
 int main(void)
 {
     TestLazy();
-
-    system("pause");
     return 0;
 }

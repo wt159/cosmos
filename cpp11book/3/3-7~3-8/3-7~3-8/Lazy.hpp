@@ -1,20 +1,20 @@
 #ifndef _LAZY_HPP_
 #define _LAZY_HPP_
-
-#include <boost/optional.hpp>
+#include <functional>
+#include "optional.hpp"
 template <typename T>
 struct Lazy {
     Lazy() { }
 
     template <typename Func, typename... Args>
-    Lazy(Func& f, Args&&... args)
+    Lazy(Func&& f, Args&&... args)
     {
         m_func = [&f, &args...] { return f(args...); };
     }
 
     T& Value()
     {
-        if (!m_value.is_initialized()) {
+        if (!m_value.has_value()) {
             m_value = m_func();
         }
 
@@ -23,12 +23,12 @@ struct Lazy {
 
     bool IsValueCreated() const
     {
-        return m_value.is_initialized();
+        return m_value.has_value();
     }
 
 private:
     std::function<T()> m_func;
-    boost::optional<T> m_value;
+    optional<T> m_value;
 };
 
 template <class Func, typename... Args>
