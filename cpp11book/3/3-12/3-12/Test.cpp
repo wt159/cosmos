@@ -18,14 +18,13 @@ public:
     {
     }
 
-    template <typename... Args>
     R Run(Args&&... args)
     {
         return m_fn(std::forward<Args>(args)...);
     }
 
     template <typename F>
-    auto Then(F& f) -> Task<typename std::result_of<F(R)>::type(Args...)>
+    auto Then(F&& f) -> Task<typename std::result_of<F(R)>::type(Args...)>
     {
         using return_type = typename std::result_of<F(R)>::type;
 
@@ -40,7 +39,7 @@ private:
 
 void TestTask()
 {
-    Task<int(int)> task = [](int i) { return i; };
+    Task<int(int)> task([](int i) { return i; });
     auto result = task.Then([](int i) { return i + 1; }).Then([](int i) { return i + 2; }).Then([](int i) { return i + 3; }).Run(1);
     std::cout << result << std::endl; // 7
 }
@@ -49,6 +48,5 @@ int main(void)
 {
     TestTask();
 
-    system("pause");
     return 0;
 }
