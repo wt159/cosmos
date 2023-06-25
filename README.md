@@ -28,6 +28,8 @@
 | [3-4](./cpp11book/3/3-4/3-4/Test.cpp) | 可变参数模版消除重复代码：创建对象工厂函数 |
 | [3-5](./cpp11book/3/3-5/3-5/optional.hpp) | 可变参数模版和type_traits综合应用：optional |
 | [3-7](./cpp11book/3/3-7~3-8/3-7~3-8/Test.cpp) | 可变参数模版和type_traits综合应用：lazy |
+| [3-9](./cpp11book/3/3-9/3-9/Test.cpp) | dll函数调用 |
+| [3-10](./cpp11book/3/3-10/3-10/Test.cpp) | 可变参数模版和type_traits综合应用：通用dll函数帮助类 |
 
 ## optional
 

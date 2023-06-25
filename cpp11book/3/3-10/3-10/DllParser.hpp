@@ -2,9 +2,9 @@
 #define _DLLPARSER_HPP_
 
 #include <Windows.h>
+#include <exception>
 #include <functional>
 #include <iostream>
-#include <map>
 #include <string>
 
 class DllParser {
@@ -37,7 +37,7 @@ public:
 
         if (f == nullptr) {
             std::string s = "can not find this function " + funcName;
-            throw std::exception(s.c_str());
+            throw std::logic_error(s.c_str());
         }
 
         return f(std::forward<Args>(args)...);
@@ -66,7 +66,6 @@ private:
 
 private:
     HMODULE m_hMod;
-    std::map<std::string, FARPROC> m_map;
 };
 
 #endif //_DLLPARSER_HPP_
