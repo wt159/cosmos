@@ -7,6 +7,7 @@ void TestAny()
 {
     Any n;
     auto r = n.IsNull(); // true
+    std::cout << "r = " << r << std::endl;
     std::string s1 = "hello";
     n = s1;
     n = "world";
@@ -19,6 +20,5 @@ int main(void)
 {
     TestAny();
 
-    system("pause");
     return 0;
 }

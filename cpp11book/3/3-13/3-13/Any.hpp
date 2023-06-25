@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include <typeindex>
+#include <typeinfo>
 
 struct Any {
     Any(void)
