@@ -28,7 +28,7 @@ void Print(T t, Args... args)
 }
 
 template <typename Tuple, int... Indexs>
-void Transform(IndexTuple<Indexs...>& in, Tuple& tp)
+void Transform(IndexTuple<Indexs...>&& in, Tuple& tp)
 {
     Print(std::get<Indexs>(tp)...);
 }
@@ -36,9 +36,9 @@ void Transform(IndexTuple<Indexs...>& in, Tuple& tp)
 int main(void)
 {
     using Tuple = std::tuple<int, double>;
+    auto Tuple_size = std::tuple_size<Tuple>::value;
     Tuple tp = std::make_tuple(1, 2);
+    std::cout << "tuple_size:" << Tuple_size << std::endl;
     Transform(MakeIndexes<std::tuple_size<Tuple>::value>::type(), tp);
-
-    system("pause");
     return 0;
 }

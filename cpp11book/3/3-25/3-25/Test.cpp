@@ -12,6 +12,5 @@ int main(void)
 {
     TupleZip();
 
-    system("pause");
     return 0;
 }

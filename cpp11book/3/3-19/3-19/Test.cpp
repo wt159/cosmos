@@ -49,6 +49,5 @@ int main(void)
 
     std::cout << index << std::endl;
 
-    system("pause");
     return 0;
 }

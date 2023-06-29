@@ -19,6 +19,5 @@ int main(void)
 {
     TestTupleForeach();
 
-    system("pause");
     return 0;
 }

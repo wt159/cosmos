@@ -30,7 +30,5 @@ int main(void)
 {
     std::tuple<int, short, double, char> tp = std::make_tuple(1, 2, 3, 'a');
     PrintTuple(tp); //Êä³ö : (1, 2, 3, a)
-
-    system("pause");
     return 0;
 }

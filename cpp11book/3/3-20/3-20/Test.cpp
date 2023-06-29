@@ -39,6 +39,5 @@ int main(void)
 {
     TestTuple();
 
-    system("pause");
     return 0;
 }

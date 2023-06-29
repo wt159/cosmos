@@ -34,6 +34,11 @@
 | [3-13](./cpp11book/3/3-13/3-13/Test.cpp) | 综合应用：Any类 |
 | [3-15](./cpp11book/3/3-15/3-15/Test.cpp) | 综合应用：Variant类 |
 | [3-16](./cpp11book/3/3-16/3-16/Test.cpp) | 综合应用：ScopeGuard类 |
+| [3-17~3-21](./cpp11book/3/3-17/3-17/Test.cpp) | std::tuple使用方法 |
+| [3-22](./cpp11book/3/3-22/3-22/Test.cpp) | 遍历tuple |
+| [3-23](./cpp11book/3/3-23/3-23/Test.cpp) | 反转tuple |
+| [3-24](./cpp11book/3/3-24/3-24/Test.cpp) | 函数应用tuple |
+| [3-25](./cpp11book/3/3-25/3-25/Test.cpp) | 合并tuple |
 
 ## optional
 

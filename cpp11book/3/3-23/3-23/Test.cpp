@@ -87,6 +87,5 @@ int main(void)
 {
     TupleReverse();
 
-    system("pause");
     return 0;
 }
