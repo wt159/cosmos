@@ -33,7 +33,5 @@ void TestScopeGuard()
 int main(void)
 {
     TestScopeGuard();
-
-    system("pause");
     return 0;
 }

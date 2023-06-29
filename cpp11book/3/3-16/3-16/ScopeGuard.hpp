@@ -2,6 +2,7 @@
 #define _SCOPEGUARD_HPP_
 
 #include <type_traits>
+#include <utility>
 
 template <typename F>
 class ScopeGuard {
