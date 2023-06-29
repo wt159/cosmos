@@ -1,6 +1,7 @@
 #include "Variant.hpp"
 #include <iostream>
 #include <string>
+#include <typeinfo>
 
 void Test()
 {
@@ -28,6 +29,5 @@ int main(void)
 {
     Test();
 
-    system("pause");
     return 0;
 }
