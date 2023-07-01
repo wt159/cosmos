@@ -3,7 +3,12 @@
 #include <thread>
 
 struct Counter {
-    std::atomic<int> value = 0;
+    std::atomic<int> value;
+
+    Counter()
+        : value(0)
+    {
+    }
 
     void increment()
     {
@@ -47,6 +52,5 @@ int main(void)
     t1.join();
     t2.join();
 
-    system("pause");
     return 0;
 }

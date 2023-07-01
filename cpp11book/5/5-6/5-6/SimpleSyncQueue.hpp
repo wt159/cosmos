@@ -14,7 +14,7 @@ public:
     void Put(const T& x)
     {
         std::lock_guard<std::mutex> locker(m_mutex);
-        m_queue.push_back(x);
+        m_queue.emplace_back(x);
         m_notEmpty.notify_one();
     }
 

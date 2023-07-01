@@ -43,6 +43,5 @@ int main(void)
 {
     TestAsync();
 
-    system("pause");
     return 0;
 }

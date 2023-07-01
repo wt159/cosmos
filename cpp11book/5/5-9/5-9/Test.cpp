@@ -23,6 +23,5 @@ int main(void)
     v.push_back(f);
     std::cout << "The shared_future result is " << v[0].get() << std::endl;
 
-    system("pause");
     return 0;
 }

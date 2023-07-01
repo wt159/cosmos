@@ -7,7 +7,7 @@ struct Complex {
     int i;
 
     Complex()
-        : i(0)
+        : i(10)
     {
     }
 
@@ -35,8 +35,10 @@ int main(void)
 {
     Complex complex;
 
-    complex.both(32, 23); //因为同一线程可以多次获取同一互斥量，不会发生死锁
+    complex.mul(32);
+    std::cout << "complex.i = " << complex.i << std::endl;
 
-    system("pause");
+    complex.both(32, 23);   // 可以正常运行
+    std::cout << "complex.i = " << complex.i << std::endl;
     return 0;
 }

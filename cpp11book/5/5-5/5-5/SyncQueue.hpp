@@ -34,7 +34,7 @@ public:
             m_notFull.wait(m_mutex);
         }
 
-        m_queue.push_back(x);
+        m_queue.emplace_back(x);
         m_notFull.notify_one();
     }
 

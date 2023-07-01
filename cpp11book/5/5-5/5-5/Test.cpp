@@ -9,7 +9,7 @@ SyncQueue<int> syncQueue(5);
 void PutDatas()
 {
     for (int i = 0; i < 20; ++i) {
-        syncQueue.Put(888);
+        syncQueue.Put(i+1);
     }
 }
 
@@ -31,6 +31,5 @@ int main(void)
     t1.join();
     t2.join();
 
-    system("pause");
     return 0;
 }
