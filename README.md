@@ -39,6 +39,9 @@
 | [3-23](./cpp11book/3/3-23/3-23/Test.cpp) | 反转tuple |
 | [3-24](./cpp11book/3/3-24/3-24/Test.cpp) | 函数应用tuple |
 | [3-25](./cpp11book/3/3-25/3-25/Test.cpp) | 合并tuple |
+| [4-1](./cpp11book/4/4-1/4-1/Test.cpp) | 智能指针`std::shared_ptr`用法 |
+| [4-2](./cpp11book/4/4-2/4-2/Test.cpp) | 智能指针`std::unique_ptr`用法 |
+| [4-3](./cpp11book/4/4-3/4-3/Test.cpp) | 智能指针`std::weak_ptr`用法 |
 
 ## optional
 
@@ -94,3 +97,25 @@ Any类是一种通用的类型安全容器，它可以存储和操作任意类�
 ScopeGuard 类是一种用于资源管理和异常处理的设计模式，在 C++ 中可以通过 RAII（资源获取即初始化）技术来实现。它的主要目的是确保在离开当前作用域时，能够正确释放已经获取的资源。
 
 ScopeGuard 类通常被设计为一个模板类，模板参数可以是资源的类型。通过在对象的构造函数中获取资源，在析构函数中释放资源，ScopeGuard 类能够确保资源的正确管理。
+
+## 智能指针
+
+### std::shared_ptr
+
+智能指针虽然能自动管理堆内存，但它还是有不少陷阱，在使用时要注意。
+
+1. 不要用一个原始指针初始化多个shared_ptr
+
+2. 不要在函数实参中创建shared_ptr
+
+3. 通过shared_from_this（）返回this指针
+
+4. 要避免循环引用
+
+### std::unique_ptr
+
+关于shared_ptr和unique_ptr的使用场景要根据实际应用需求来选择，如果希望只有一个智能指针管理资源或者管理数组就用unique_ptr，如果希望多个智能指针管理同一个资源就用shared_ptr.
+
+### std::weak_ptr
+
+弱引用指针weak_ptr是用来监视shared_ptr的，不会使引用计数加1，它不管理shared_ptr内部的指针，主要是为了监视shared_ptr的生命周期，更像是shared_ptr的一个助手。weak_ptr没有重载操作符*和->，因为它不共享指针，不能操作资源，主要是为了通过shared_ptr获得资源的监测权，它的构造不会增加引用计数，它的析构也不会减少引用计数，纯粹只是作为一个旁观者来监视shared_ptr中管理的资源是否存在。weak_ptr还可以用来返回this指针和解决循环引用的问题。

@@ -1,47 +1,87 @@
 #include <iostream>
 #include <memory>
-#include <type_traits>
 
-//支持普通指针
-template <class T, class... Args>
-inline
-    typename std::enable_if<!std::is_array<T>::value, std::unique_ptr<T>>::type
-    make_unique(Args&&... args)
+void testInit()
 {
-    return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+    // init
+    std::cout << "\nshared_ptr init:" << std::endl;
+    std::shared_ptr<int> p(new int(10));
+    std::cout << *p << std::endl;
+    std::shared_ptr<int> p2 = p;
+    std::cout << *p2 << std::endl;
+    std::cout << "p use_count:" << p.use_count() << std::endl;
+    std::shared_ptr<int> p3;
+    p3.reset(new int(20));
+    if (p3) {
+        std::cout << "p3 is not null:" << *p3 << std::endl;
+    }
+    // std::shared_ptr<int> p4 = new int(1); // error, 不可以直接赋值
+    std::shared_ptr<int> p5 = std::make_shared<int>(10);
 }
 
-//支持动态数组
-template <class T>
-inline
-    typename std::enable_if<std::is_array<T>::value && std::extent<T>::value == 0, std::unique_ptr<T>>::type
-    make_unique(size_t size)
+void testRawPointer()
 {
-    typedef typename std::remove_extent<T>::type U;
-    return std::unique_ptr<T>(new U[size]());
+    std::cout << "\nshared_ptr raw pointer:" << std::endl;
+    std::shared_ptr<int> ptr(new int(10));
+    std::cout << *ptr << std::endl;
+    int* p = ptr.get();
+    std::cout << *p << std::endl;
 }
 
-//过滤掉定长数组的情况
-template <class T, class... Args>
-typename std::enable_if<std::extent<T>::value != 0, void>::type
-make_unique(Args&&...)
-    = delete;
-
-int main(void)
+void DeleteInt(int* p)
 {
-    auto unique = make_unique<int>(100);
-    std::cout << *unique << std::endl;
+    std::cout << "delete int:" << *p << std::endl;
+    delete p;
+}
+void testDelete()
+{
+    std::cout << "\nshared_ptr delete:" << std::endl;
+    std::shared_ptr<int> p(new int(10), DeleteInt);
+    std::cout << *p << std::endl;
+}
 
-    auto unique2 = make_unique<int[]>(10);
+template <typename T>
+std::shared_ptr<T> make_shared_array(size_t size)
+{
+    return std::shared_ptr<T>(new T[size], std::default_delete<int[]>());
+}
 
+void testArray()
+{
+    std::cout << "\nshared_ptr array:" << std::endl;
+    // 自定义删除器
+    std::shared_ptr<int> p(new int[10], [](int* p) {
+        std::cout << "delete array" << std::endl;
+        delete[] p;
+    });
     for (int i = 0; i < 10; i++) {
-        unique2[i] = i;
+        p.get()[i] = i;
     }
     for (int i = 0; i < 10; i++) {
-        std::cout << unique2[i] << " ";
+        std::cout << p.get()[i] << " ";
     }
     std::cout << std::endl;
 
-    system("pause");
+    // 使用std::default_delete作为删除器
+    std::shared_ptr<int> p2(new int[10], std::default_delete<int[]>());
+    // 使用make_shared_array
+    std::shared_ptr<int> p3 = make_shared_array<int>(10);
+}
+
+void testNotice()
+{
+    std::cout << "\nshared_ptr notice:" << std::endl;
+    // 1. 不要用一个原始指针初始化多个shared_ptr
+    // 2. 不要在函数实参中创建shared_ptr
+    // 3. 通过shared_from_this（）返回this指针
+    // 4. 要避免循环引用
+}
+
+int main(int argc, char const* argv[])
+{
+    testInit();
+    testRawPointer();
+    testDelete();
+    testArray();
     return 0;
 }
