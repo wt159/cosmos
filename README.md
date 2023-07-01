@@ -53,6 +53,7 @@
 | [5-9](./cpp11book/5/5-9/5-9/Test.cpp) | 异步操作`std::future std::package_task`用法 |
 | [5-10](./cpp11book/5/5-10/5-10/Test.cpp) | 异步操作`std::future std::async`用法 |
 | [5-11](./cpp11book/5/5-11/5-11/Test.cpp) | `std::call_once`用法|
+| [6-1](./cpp11book/6/6-1/6-1/Test.cpp) | `chrono`日期和时间用法|
 
 ## type_traits和模版等综合应用
 
