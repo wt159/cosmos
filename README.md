@@ -54,6 +54,7 @@
 | [5-10](./cpp11book/5/5-10/5-10/Test.cpp) | 异步操作`std::future std::async`用法 |
 | [5-11](./cpp11book/5/5-11/5-11/Test.cpp) | `std::call_once`用法|
 | [6-1](./cpp11book/6/6-1/6-1/Test.cpp) | `chrono`日期和时间用法|
+| [6-2](./cpp11book/6/6-2/6-2/Test.cpp) | 数值类型和字符串的相互转换用法|
 
 ## type_traits和模版等综合应用
 
@@ -61,13 +62,13 @@
 
 类模板 std::optional 管理一个可选的容纳值，既可以存在也可以不存在的值。
 
-一种常见的 optional 使用情况是一个可能失败的函数的返回值。与其他手段，如 std::pair\<T,bool> 相比， optional 良好地处理构造开销高昂的对象，并更加可读，因为它显式表达意图。
+一种常见的 optional 使用情况是一个可能失败的函数的返回值。与其他手段，如 `std::pair<T,bool>` 相比， optional 良好地处理构造开销高昂的对象，并更加可读，因为它显式表达意图。
 
-任何一个 optional\<T> 的实例在给定时间点要么含值，要么不含值。
+任何一个 `optional<T>` 的实例在给定时间点要么含值，要么不含值。
 
-若一个 optional\<T> 含值，则保证值作为 optional 对象所用空间的一部分分配，即不会发生动态内存分配。从而 optional 对象模拟一个对象，而非指针，尽管定义了 operator*() 和 operator->() 运算符。
+若一个 `optional<T>` 含值，则保证值作为 optional 对象所用空间的一部分分配，即不会发生动态内存分配。从而 optional 对象模拟一个对象，而非指针，尽管定义了 operator*() 和 operator->() 运算符。
 
-当一个 optional\<T> 对象被按语境转换成 bool 时，若对象含值则转换返回 true ，若对象不含值则返回 false 。
+当一个 `optional<T>` 对象被按语境转换成 bool 时，若对象含值则转换返回 true ，若对象不含值则返回 false 。
 
 optional 对象在下列条件下含值：
 

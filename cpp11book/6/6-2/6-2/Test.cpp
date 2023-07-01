@@ -28,6 +28,5 @@ int main(void)
     std::cout << "std::atoi(\"" << str4 << "\") is " << num4 << '\n';
     std::cout << "std::atoi(\"" << str2 << "\") is " << f2 << std::endl;
 
-    system("pause");
     return 0;
 }
