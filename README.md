@@ -55,6 +55,10 @@
 | [5-11](./cpp11book/5/5-11/5-11/Test.cpp) | `std::call_once`用法|
 | [6-1](./cpp11book/6/6-1/6-1/Test.cpp) | `chrono`日期和时间用法|
 | [6-2](./cpp11book/6/6-2/6-2/Test.cpp) | 数值类型和字符串的相互转换用法|
+| [7-1](./cpp11book/7/7-1/Test.cpp) | 委托构造函数和继承构造函数用法|
+| [7-2](./cpp11book/7/7-2/Test.cpp) | 原始字面量`R"(xxx)"`用法|
+| [7-3](./cpp11book/7/7-3/Test.cpp) | `final override`关键字用法|
+| [7-4](./cpp11book/7/7-4/Test.cpp) | 内存对齐相关|
 
 ## type_traits和模版等综合应用
 
