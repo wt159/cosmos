@@ -37,8 +37,8 @@ typename enable_if<extent<T>::value != 0, void>::type make_unique(Args&&...) = d
 //------shared_ptr异常安全地管理第三方内存
 #define GUARD(P) std::shared_ptr<void> p##p(p, [](void* p) { GetHandle()->Release(p); });
 
-void* p = GetHandle()->Create();
-GUARD(p); //安全
+// void* p = GetHandle()->Create();
+// GUARD(p); //安全
 
 //------unique_ptr异常安全地管理第三方内存
 #define GUARD(P) std::unique_ptr<void, void (*)(int*)> p##p(p, [](void* p) { GetHandle()->Release(p); });

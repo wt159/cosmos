@@ -11,23 +11,23 @@ public:
     // LIFO
     void push_front(const T& val)
     {
-        std::unique_lock<std::mutex> l(mtx_);
-        deque_.push_front(val);
+        std::unique_lock<std::mutex> l(m_mtx);
+        m_deque.push_front(val);
     }
 
     T pop_front()
     {
-        mtx_.lock();
+        m_mtx.lock();
 
-        if (deque_.empty()) {
-            mtx_.unlock();
+        if (m_deque.empty()) {
+            m_mtx.unlock();
             return nullptr;
         }
 
-        T val = deque_.front();
-        deque_.pop_front();
+        T val = m_deque.front();
+        m_deque.pop_front();
 
-        mtx_.unlock();
+        m_mtx.unlock();
 
         return val;
     }
@@ -35,18 +35,18 @@ public:
     // for steal FIFO
     T pop_back()
     {
-        if (!mtx_.try_lock())
+        if (!m_mtx.try_lock())
             return nullptr;
 
-        if (deque_.empty()) {
-            mtx_.unlock();
+        if (m_deque.empty()) {
+            m_mtx.unlock();
             return nullptr;
         }
 
-        T val = deque_.back();
-        deque_.pop_back();
+        T val = m_deque.back();
+        m_deque.pop_back();
 
-        mtx_.unlock();
+        m_mtx.unlock();
 
         return val;
     }
@@ -54,10 +54,10 @@ public:
     bool empty()
     {
         // std::unique_lock<std::mutex> l(mtx_);
-        return deque_.empty();
+        return m_deque.empty();
     }
 
 private:
-    std::deque<T> deque_;
-    std::mutex mtx_;
+    std::deque<T> m_deque;
+    std::mutex m_mtx;
 };

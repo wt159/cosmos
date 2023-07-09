@@ -1,5 +1,5 @@
 #pragma once
-#include "sync_deque.hpp"
+#include "SyncDeque.hpp"
 #include <algorithm>
 #include <functional>
 #include <memory>
@@ -13,11 +13,11 @@ using task_t = std::function<void()>;
 class worker_t final {
 public:
     worker_t(workers_ptr workers, int work_num)
-        : workers_(workers)
-        , work_num_(work_num)
-        , enable_(true)
+        : m_workers(workers)
+        , m_workNum(work_num)
+        , m_enable(true)
     {
-        thread_ = std::thread(&worker_t::execute, this);
+        m_thread = std::thread(&worker_t::execute, this);
     }
 
     ~worker_t()
@@ -26,45 +26,45 @@ public:
 
     void assign(const task_t& task)
     {
-        queue_.push_front(task);
+        m_queue.push_front(task);
     }
 
     task_t steal()
     {
-        return queue_.pop_back();
+        return m_queue.pop_back();
     }
 
     bool empty()
     {
-        return queue_.empty();
+        return m_queue.empty();
     }
 
     void join()
     {
-        enable_ = false;
-        thread_.join();
+        m_enable = false;
+        m_thread.join();
     }
 
 private:
     void execute()
     {
-        thread_id_ = std::this_thread::get_id();
-        while (enable_) {
+        m_threadID = std::this_thread::get_id();
+        while (m_enable) {
             // not ready
-            if (work_num_ != workers_->size()) {
+            if (m_workNum != m_workers->size()) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
                 continue;
             }
 
             // do work
-            task_t t = queue_.pop_front();
+            task_t t = m_queue.pop_front();
             while (t != nullptr) {
                 t();
-                t = queue_.pop_front();
+                t = m_queue.pop_front();
             }
 
             // check if has task
-            bool no_task = std::all_of(workers_->begin(), workers_->end(), [](std::shared_ptr<worker_t> worker) { return worker->empty(); });
+            bool no_task = std::all_of(m_workers->begin(), m_workers->end(), [](std::shared_ptr<worker_t> worker) { return worker->empty(); });
             if (no_task) {
                 // std::cout<<"all tasks have been finished!"<<std::endl;
                 std::this_thread::sleep_for(std::chrono::milliseconds(50));
@@ -72,11 +72,11 @@ private:
             }
 
             // steal
-            int rand_select = rand() % workers_->size();
-            if (workers_->at(rand_select) == nullptr)
+            int rand_select = rand() % m_workers->size();
+            if (m_workers->at(rand_select) == nullptr)
                 continue;
 
-            t = workers_->at(rand_select)->steal();
+            t = m_workers->at(rand_select)->steal();
 
             if (t != nullptr) {
                 t();
@@ -84,11 +84,11 @@ private:
         }
     }
 
-    std::thread thread_;
-    std::shared_ptr<std::vector<std::shared_ptr<worker_t>>> workers_;
-    std::thread::id thread_id_;
-    sync_deque<task_t> queue_;
+    std::thread m_thread;
+    std::shared_ptr<std::vector<std::shared_ptr<worker_t>>> m_workers;
+    std::thread::id m_threadID;
+    sync_deque<task_t> m_queue;
 
-    int work_num_;
-    bool enable_;
+    int m_workNum;
+    bool m_enable;
 };

@@ -4,20 +4,20 @@ class thread_pool {
 public:
     thread_pool(size_t thread_num = std::thread::hardware_concurrency())
     {
-        workers_ = std::make_shared<std::vector<std::shared_ptr<worker_t>>>();
+        m_workers = std::make_shared<std::vector<std::shared_ptr<worker_t>>>();
         for (size_t i = 0; i < thread_num; i++) {
-            auto worker = std::make_shared<worker_t>(workers_, thread_num);
-            workers_->push_back(worker);
+            auto worker = std::make_shared<worker_t>(m_workers, thread_num);
+            m_workers->push_back(worker);
         }
     }
 
     ~thread_pool()
     {
-        for (auto worker : *workers_) {
+        for (auto worker : *m_workers) {
             worker->join();
         }
 
-        workers_->clear();
+        m_workers->clear();
     }
 
     void add_task(const task_t& task)
@@ -29,9 +29,9 @@ public:
 private:
     std::shared_ptr<worker_t> get_rand_worker()
     {
-        int i = rand() % workers_->size();
-        return workers_->at(i);
+        int i = rand() % m_workers->size();
+        return m_workers->at(i);
     }
 
-    workers_ptr workers_;
+    workers_ptr m_workers;
 };

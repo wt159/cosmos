@@ -1,5 +1,6 @@
 #pragma once
 #include <cctype>
+#include <cstring>
 #include <inttypes.h>
 #include <string>
 #include <tuple>
@@ -47,13 +48,15 @@ inline void FormatArg(char*& buf, string& s)
 }
 
 template <size_t k, typename Tuple>
-typename std::enable_if<(k == std::tuple_size<Tuple>::value)>::type inline GetArgByIndex(size_t, Tuple&, char*&)
+typename std::enable_if<(k == std::tuple_size<Tuple>::value)>::type inline GetArgByIndex(
+    size_t, Tuple&, char*&)
 {
     throw std::invalid_argument("arg index out of range");
 }
 
 template <size_t k = 0, typename Tuple>
-typename std::enable_if<(k < std::tuple_size<Tuple>::value)>::type inline GetArgByIndex(size_t index, Tuple& tp, char*& p)
+typename std::enable_if<(k < std::tuple_size<Tuple>::value)>::type inline GetArgByIndex(
+    size_t index, Tuple& tp, char*& p)
 {
     if (k == index) {
         FormatArg(p, std::get<k>(tp));
@@ -93,14 +96,12 @@ inline int GetIndex(char*& p)
 }
 }
 
-template <typename... Args>
-inline string format(const string& src, Args... args)
+template <typename... Args> inline string format(const string& src, Args... args)
 {
     return format((char*)src.c_str(), args...);
 }
 
-template <typename... Args>
-inline string format(char* src, Args... args)
+template <typename... Args> inline string format(char* src, Args... args)
 {
     using namespace detail;
     char* buf = g_buf;
@@ -110,7 +111,7 @@ inline string format(char* src, Args... args)
     char* original = p;
     int len = strlen(src) + 1;
     int last = 0;
-    　　while (true)
+    while (true)
     {
         if (*p == '{') {
             // copy content befor {
@@ -126,22 +127,16 @@ inline string format(char* src, Args... args)
 
             // skip }
             original = p + 1;
-        }
-        　　　　　else if (*p == '\0')
-        {
-            　　　　　　　　
+        } else if (*p == '\0') {
+            last = p - original;
 
-　　　　　　last = p - original;
-
-            　　　　　　memcpy(buf, original, last);
+            memcpy(buf, original, last);
             break;
-            　　　　　
         }
-        　　
 
-            p++;
+        p++;
     }
-    　　string s = g_buf;
-    　　memset(g_buf, 0, buf - g_buf);
-    　　return s;
+    string s = g_buf;
+    memset(g_buf, 0, buf - g_buf);
+    return s;
 }

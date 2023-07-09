@@ -64,6 +64,7 @@
 | [8-3](./cpp11book/8/8-3/Test.cpp) | 设计模式：改进访问者模式|
 | [8-4](./cpp11book/8/8-4/Test.cpp) | 设计模式：改进命令模式|
 | [8-5](./cpp11book/8/8-5/Test.cpp) | 设计模式：改进对象池模式|
+| [9-1](./worksteal/main.cpp) | 半同步半异步的线程池|
 
 ## type_traits和模版等综合应用
 
