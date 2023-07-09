@@ -59,6 +59,11 @@
 | [7-2](./cpp11book/7/7-2/Test.cpp) | 原始字面量`R"(xxx)"`用法|
 | [7-3](./cpp11book/7/7-3/Test.cpp) | `final override`关键字用法|
 | [7-4](./cpp11book/7/7-4/Test.cpp) | 内存对齐相关|
+| [8-1](./cpp11book/8/8-1/Test.cpp) | 设计模式：改进单例模式|
+| [8-2](./cpp11book/8/8-2/Test.cpp) | 设计模式：改进观察者模式|
+| [8-3](./cpp11book/8/8-3/Test.cpp) | 设计模式：改进访问者模式|
+| [8-4](./cpp11book/8/8-4/Test.cpp) | 设计模式：改进命令模式|
+| [8-5](./cpp11book/8/8-5/Test.cpp) | 设计模式：改进对象池模式|
 
 ## type_traits和模版等综合应用
 
