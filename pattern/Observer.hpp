@@ -4,7 +4,7 @@
 #include <string>
 using namespace std;
 
-#include "NonCopyable.hpp"
+#include "../NonCopyable.hpp"
 
 template <typename Func>
 class Events : NonCopyable {
