@@ -1,11 +1,8 @@
-#ifndef _ANY_HPP_
-#define _ANY_HPP_
-
+#pragma once
+#include <exception>
 #include <iostream>
 #include <memory>
-#include <string>
 #include <typeindex>
-#include <typeinfo>
 
 struct Any {
     Any(void)
@@ -45,7 +42,7 @@ struct Any {
     {
         if (!Is<U>()) {
             std::cout << "can not cast " << typeid(U).name() << " to " << m_tpIndex.name() << std::endl;
-            throw std::bad_cast();
+            throw std::logic_error { "bad cast" };
         }
 
         auto derived = dynamic_cast<Derived<U>*>(m_ptr.get());
@@ -58,6 +55,16 @@ struct Any {
             return *this;
 
         m_ptr = a.Clone();
+        m_tpIndex = a.m_tpIndex;
+        return *this;
+    }
+
+    Any& operator=(Any&& a)
+    {
+        if (m_ptr == a.m_ptr)
+            return *this;
+
+        m_ptr = std::move(a.m_ptr);
         m_tpIndex = a.m_tpIndex;
         return *this;
     }
@@ -98,5 +105,3 @@ private:
     BasePtr m_ptr;
     std::type_index m_tpIndex;
 };
-
-#endif //_ANY_HPP_
